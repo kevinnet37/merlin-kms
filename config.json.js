@@ -2,8 +2,8 @@
     "build_date": "2016-11-25_21:35:44", 
     "description": "来自网络的胃軟系统工具", 
     "home_url": "Module_kms.asp", 
-    "md5": "3212b83235d85c05baf1ec8651e8ebb7", 
+    "md5": "2cbe66855c13d24e3d81d6d9093f99bc", 
     "module": "kms", 
     "title": "系统工具", 
-    "version": "1.2"
+    "version": "1.3"
 }
