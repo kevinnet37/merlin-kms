@@ -21,7 +21,7 @@ chmod a+x /koolshare/scripts/kms.sh
 chmod 0755 /koolshare/bin/vlmcsd
 
 # re-enable kms
-if [ $restart == 1 ];then
+if [ "$restart" == "1" ];then
 	dbus set kms_enable=1
 	sh /koolshare/scripts/kms.sh
 fi

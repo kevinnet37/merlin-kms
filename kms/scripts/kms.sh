@@ -3,6 +3,7 @@
 eval `dbus export kms`
 source /koolshare/scripts/base.sh
 CONFIG_FILE=/jffs/configs/dnsmasq.d/kms.conf
+FIREWALL_START=/jffs/scripts/firewall-start
 
 start_kms(){
 	/koolshare/bin/vlmcsd
@@ -12,8 +13,8 @@ start_kms(){
 	service restart_dnsmasq
 	# creating iptables rules to firewall-start
 	mkdir -p /jffs/scripts
-	if [ ! -f /jffs/scripts/firewall-start ]; then 
-		cat > /jffs/scripts/firewall-start <<-EOF
+	if [ ! -f $FIREWALL_START ]; then 
+		cat > $FIREWALL_START <<-EOF
 		#!/bin/sh
 	EOF
 	fi
@@ -36,15 +37,15 @@ open_port(){
 		iptables -t filter -I INPUT -p tcp --dport 1688 -j ACCEPT
 	fi
 
-	if [ ! -f /jffs/scripts/firewall-start ]; then
-		cat > /jffs/scripts/firewall-start <<-EOF
+	if [ ! -f $FIREWALL_START ]; then
+		cat > $FIREWALL_START <<-EOF
 		#!/bin/sh
 		EOF
 	fi
 	
-	fire_rule=$(cat /jffs/scripts/firewall-start | grep 1688)
+	fire_rule=$(cat $FIREWALL_START | grep 1688)
 	if [ -z "$fire_rule" ];then
-		cat >> /jffs/scripts/firewall-start <<-EOF
+		cat >> $FIREWALL_START <<-EOF
 		iptables -t filter -I INPUT -p tcp --dport 1688 -j ACCEPT
 		EOF
 	fi
@@ -56,9 +57,9 @@ close_port(){
 		iptables -t filter -D INPUT -p tcp --dport 1688 -j ACCEPT
 	fi
 
-	fire_rule=$(cat /jffs/scripts/firewall-start | grep 1688)
+	fire_rule=$(cat $FIREWALL_START | grep 1688)
 	if [ ! -z "$fire_rule" ];then
-		sed -i '/1688/d' /jffs/scripts/firewall-start >/dev/null 2>&1
+		sed -i '/1688/d' $FIREWALL_START >/dev/null 2>&1
 	fi
 }
 
